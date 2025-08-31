@@ -1,17 +1,13 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
 
 import { userController } from '../../components/users/user.controller';
-import validarCampos from '../middlewares/validar-campos';
+import { createUserValidator } from '../../components/users/user.validators';
 
 const router = Router();
 
 router.get('/', userController.users );
 
-router.post('/', [
-    body(['name','username','email','password'] , 'Los campos son obligatorios').not().isEmpty()
-    ,validarCampos
-] , userController.create );
+router.post('/', createUserValidator , userController.create );
 
 // Aquí irían otras rutas como:
 // router.get('/:id', userController.getById);

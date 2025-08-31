@@ -34,6 +34,13 @@ export class UserService {
         return users;
 
     }
+
+    public async isEmailTaken( email: string ): Promise<boolean> {
+
+        const user = await this.repository.findByEmail( email );
+        return !!user;
+
+    }
     
     // Aquí irían otros métodos como:
     // - getUserById(id: number)
