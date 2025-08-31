@@ -13,6 +13,7 @@ const existsEmail = async ( value: string ): Promise<MapConstructor | void> => {
 export const createUserValidator = [
     check('name', 'El nombre es obligatorio').not().isEmpty().trim(),
     check('username', 'El apellido es obligatorio').not().isEmpty().trim(),
+    check('role', 'El role es obligatorio').not().isEmpty().trim(),
     check('email', 'El email no es válido o ya está en uso')
         .isEmail()
         .normalizeEmail()

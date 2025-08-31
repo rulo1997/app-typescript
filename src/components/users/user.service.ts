@@ -3,6 +3,7 @@ import { InferCreationAttributes } from 'sequelize';
 
 import { userRepository, UserRepository } from './user.repository';
 import User , { UserAttributes } from './user.model';
+import { Request, NextFunction } from 'express';
 
 type CreateUserDto = InferCreationAttributes<User>;
 
@@ -33,10 +34,18 @@ export class UserService {
 
     }
 
+    /* VALIDACIONES */
     public async isEmailTaken( email: string ): Promise<boolean> {
 
         const user = await this.repository.findByEmail( email );
         return !!user;
+
+    }
+
+    public async isValidPassword( password: string ): Promise<boolean> {
+
+        const isPasswordValid = await bcrypt.compare( password , password );
+        return !!isPasswordValid;
 
     }
     

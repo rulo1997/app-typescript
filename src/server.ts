@@ -1,5 +1,6 @@
-import cors from 'cors';
 import express , { Application } from 'express';
+import 'express-async-errors'; 
+import cors from 'cors';
 
 import db from './config/database';
 import routes from './api/routes';
@@ -16,7 +17,6 @@ export class Server {
         this.middlewares();
         this.routes();
         this.dbAuthenticate();
-        this.app.use( errorHandler );
 
     }
 
@@ -36,7 +36,7 @@ export class Server {
 
             setupAssociations();
 
-            await db.sync({ force: true });
+            await db.sync({ force: false });
             console.log(`Sincronizacion de Modelos`);
 
         } catch( error ) {
@@ -55,6 +55,7 @@ export class Server {
 
     public listen () {
 
+        this.app.use( errorHandler );
         this.app.listen( this.port );
         console.log(`Servidor corriendo en el puerto ${ this.port }`);
 

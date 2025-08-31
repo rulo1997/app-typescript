@@ -24,6 +24,13 @@ export class UserRepository {
 
     }
 
+    public async findByEmailWithPassword( email: string ): Promise<User> {
+
+        const user = await User.scope('withPassword').findOne({ where: { email } });
+        return user!;
+
+    }
+
     public async findAllUsers(): Promise<User[] | []> {
 
         const users = await User.findAll();
