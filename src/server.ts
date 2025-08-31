@@ -4,6 +4,7 @@ import db from './config/database';
 
 import routes from './api/routes';
 import { errorHandler } from './api/middlewares/error.handler';
+import { setupAssociations } from './core/database/associations';
 
 export class Server {
 
@@ -33,7 +34,9 @@ export class Server {
             db.authenticate();
             console.log(`Base de datos conectada con éxito`);
 
-            await db.sync({ force: false , logging: true }); 
+            setupAssociations();
+
+            await db.sync({ force: true });
             console.log(`Sincronizacion de Modelos`);
 
         } catch( error ) {

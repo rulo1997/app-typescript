@@ -1,8 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { InferCreationAttributes } from 'sequelize';
 
-import { AppError } from '../../core/AppError';
-
 import { userRepository, UserRepository } from './user.repository';
 import User , { UserAttributes } from './user.model';
 
@@ -27,7 +25,7 @@ export class UserService {
 
     }
 
-    public async getUsers(): Promise<User[] | []> {
+    public async getUsers(): Promise<UserAttributes[] | []> {
 
         const users = await this.repository.findAllUsers();
 

@@ -1,5 +1,6 @@
-import { Model , DataTypes , CreationOptional } from 'sequelize';
+import { Model , DataTypes , CreationOptional, HasManyGetAssociationsMixin } from 'sequelize';
 import sequelize from '../../config/database';
+import Product from '../products/product.model';
 
 export interface UserAttributes {
     id?: CreationOptional<number>;
@@ -15,8 +16,8 @@ class User extends Model<UserAttributes> implements UserAttributes {
     public username!: string;
     public email!: string;
     public password!: string;
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
+    public readonly products?: Product[]; 
+    public getProducts!: HasManyGetAssociationsMixin<Product>;
 }
 
 User.init(
@@ -46,7 +47,20 @@ User.init(
     },
     {
         tableName: 'users',
+        timestamps: false,
         sequelize,
+        defaultScope: {
+            attributes: {
+                exclude: ['password']
+            }
+        },
+        scopes: {
+            withPassword: {
+                attributes: {
+                    include: ['password']
+                }   
+            }
+        }
     }
 );
 
