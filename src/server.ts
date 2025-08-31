@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express , { Application } from 'express';
-import db from './config/database';
 
+import db from './config/database';
 import routes from './api/routes';
 import { errorHandler } from './api/middlewares/error.handler';
 import { setupAssociations } from './core/database/associations';
@@ -36,7 +36,7 @@ export class Server {
 
             setupAssociations();
 
-            await db.sync({ force: true });
+            await db.sync({ force: false });
             console.log(`Sincronizacion de Modelos`);
 
         } catch( error ) {

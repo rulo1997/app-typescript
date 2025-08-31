@@ -9,7 +9,7 @@ export interface ProductAttributes {
     description: string;
     price: number;
     stock: number;
-    userId: ForeignKey<User['id']>;
+    userId?: ForeignKey<User['id']>;
 }
 
 class Product extends Model<ProductAttributes> implements ProductAttributes {
