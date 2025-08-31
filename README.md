@@ -51,7 +51,7 @@ Sigue estos pasos para levantar el entorno de desarrollo local.
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone [https://github.com/tu-usuario/tu-repositorio.git](https://github.com/tu-usuario/tu-repositorio.git)
+    git clone [https://github.com/rulo1997/app-typescript](https://github.com/tu-usuario/tu-repositorio.git)
     cd tu-repositorio
     ```
 
@@ -83,7 +83,7 @@ Sigue estos pasos para levantar el entorno de desarrollo local.
 | Verbo  | Endpoint          | Descripción                  |
 | :----- | :---------------- | :--------------------------- |
 | `POST` | `/api/users`      | Registra un nuevo usuario.   |
-| `GET`  | `/api/users`      | (Próximamente) Lista todos los usuarios. |
+| `GET`  | `/api/users`      | Lista todos los usuarios. |
 
 ---
 ## ✍️ Autor
