@@ -1,10 +1,13 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import { userRepository } from '../users/user.repository';
-import { AppError } from '../../core/AppError';
 import Role from '../roles/role.model';
 import Permission from '../permissions/permission.model';
+
+import { userRepository } from '../users/user.repository';
+import { AppError } from '../../core/AppError';
+import User, { UserAttributes } from '../users/user.model';
+import { InferAttributes } from 'sequelize';
 
 export class AuthService {
     
@@ -29,7 +32,7 @@ export class AuthService {
             ],
         });
 
-        if( !user ) throw new AppError('Credenciales inválidas.' , 401 );
+        if( !user ) throw new AppError('Credenciales inválidas.' , 401 );        
 
         const isPasswordValid = await bcrypt.compare( password , user.password );
 
@@ -64,6 +67,22 @@ export class AuthService {
             token
             ,user: userResponse
         }
+
+    }
+
+    public async register( body: InferAttributes<User> ): Promise<Omit<InferAttributes<User> , 'password'>> {
+
+        const user = await this.userRepo.findByEmail( body.email );
+
+        if( user ) throw new AppError(`Ya existe un usuario con el email ${ body.email }` , 401 );
+
+        const hashedPassword = await bcrypt.hash( body.password , 10 );
+
+        const newUser = await this.userRepo.create({ ...body , password: hashedPassword });
+
+        const { password , ...userWithoutPassword } = newUser.get({ plain: true });
+
+        return userWithoutPassword as Omit<InferAttributes<User>, 'password'>;
 
     }
 

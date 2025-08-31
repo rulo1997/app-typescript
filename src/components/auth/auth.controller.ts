@@ -14,6 +14,16 @@ class AuthController {
 
     }
 
+    public register = async( req: Request , res: Response , next: NextFunction ) => {
+
+        const body = req.body;
+
+        const result = await authService.register( body );
+
+        res.status( 200 ).json( result );
+
+    }
+
 }
 
 export const authController = new AuthController();

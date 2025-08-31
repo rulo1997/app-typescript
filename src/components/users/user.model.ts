@@ -14,6 +14,8 @@ export interface UserAttributes {
     username: string;
     email: string;
     password: string;
+    roles?: Role[];
+    getRoles?: BelongsToManyGetAssociationsMixin<Role>;
 }
 
 class User extends Model<UserAttributes> implements UserAttributes {

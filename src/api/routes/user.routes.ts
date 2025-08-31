@@ -1,13 +1,11 @@
 import { Router } from 'express';
 
 import { userController } from '../../components/users/user.controller';
-import { createUserValidator } from '../../components/users/user.validators';
+import { checkPermission } from '../middlewares/permission.middleware';
 
 const router = Router();
 
-router.get('/', userController.users );
-
-router.post('/', createUserValidator , userController.create );
+router.get('/', checkPermission('read:user') , userController.users );
 
 // Aquí irían otras rutas como:
 // router.get('/:id', userController.getById);
