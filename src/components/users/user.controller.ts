@@ -8,22 +8,11 @@ export class UserController {
 
     public create = async( req: Request , res: Response ): Promise<void> => {
 
-        try {
-            
-            const userData = req.body;
+        const userData = req.body;
 
-            const newUser = await this.service.createUser( userData );
+        const newUser = await this.service.createUser( userData );
 
-            res.status( 201 ).json( newUser );
-
-        } catch( error: any ) {
-        
-            if( error.message === 'El correo electrónico ya está en uso.') {
-                res.status( 409 ).json({ message: error.message }); // 409 Conflict
-            } else {
-                res.status( 500 ).json({ message: 'Error interno del servidor' });
-            }
-        }
+        res.status( 201 ).json( newUser );
 
     };
 

@@ -3,6 +3,7 @@ import express , { Application } from 'express';
 import db from './config/database';
 
 import routes from './api/routes';
+import { errorHandler } from './api/middlewares/error.handler';
 
 export class Server {
 
@@ -14,6 +15,7 @@ export class Server {
         this.middlewares();
         this.routes();
         this.dbAuthenticate();
+        this.app.use( errorHandler );
 
     }
 

@@ -3,16 +3,16 @@ import sequelize from '../../config/database';
 
 export interface UserAttributes {
     id?: CreationOptional<number>;
-    firstName: string;
-    lastName: string;
+    name: string;
+    username: string;
     email: string;
     password: string;
 }
 
 class User extends Model<UserAttributes> implements UserAttributes {
     public id!: CreationOptional<number>;
-    public firstName!: string;
-    public lastName!: string;
+    public name!: string;
+    public username!: string;
     public email!: string;
     public password!: string;
     public readonly createdAt!: Date;
@@ -26,23 +26,22 @@ User.init(
             autoIncrement: true,
             primaryKey: true,
         },
-        firstName: {
-            type: new DataTypes.STRING(128),
+        name: {
+            type: DataTypes.STRING(128),
             allowNull: false,
         },
-        lastName: {
-            type: new DataTypes.STRING(128),
+        username: {
+            type: DataTypes.STRING(128),
             allowNull: false,
         },
         email: {
-            type: new DataTypes.STRING(128),
+            type: DataTypes.STRING(128),
             allowNull: false,
             unique: true,
         },
         password: {
-            type: new DataTypes.STRING(128),
+            type: DataTypes.STRING(128),
             allowNull: false,
-            unique: true,
         },
     },
     {

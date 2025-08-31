@@ -1,6 +1,8 @@
 import bcrypt from 'bcryptjs';
 import { InferCreationAttributes } from 'sequelize';
 
+import { AppError } from '../../core/AppError';
+
 import { userRepository, UserRepository } from './user.repository';
 import User , { UserAttributes } from './user.model';
 
@@ -11,10 +13,6 @@ export class UserService {
     constructor( private repository: UserRepository = userRepository ) {}
 
     public async createUser( userData: CreateUserDto ): Promise<Omit<UserAttributes, 'password'>> {
-
-        const existingUser = await this.repository.findByEmail( userData.email );
-
-        if( existingUser ) throw new Error('El correo electrónico ya está en uso.');
 
         const hashedPassword = await bcrypt.hash( userData.password , 10 );
 
