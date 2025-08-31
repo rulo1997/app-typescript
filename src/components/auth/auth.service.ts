@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 
 import { userRepository } from '../users/user.repository';
 import { AppError } from '../../core/AppError';
+import Role from '../roles/role.model';
+import Permission from '../permissions/permission.model';
 
 export class AuthService {
     
@@ -10,7 +12,22 @@ export class AuthService {
 
     public async login( email: string , password: string ): Promise<{ token: string ; user: { id: number, email: string } }> {
         
-        const user = await this.userRepo.findByEmailWithPassword( email );
+        const user = await this.userRepo.findByEmailWithPassword( email , {
+            include: [
+                {
+                    model: Role,
+                    as: 'roles',
+                    include: [
+                        {
+                            model: Permission,
+                            as: 'permissions',
+                            through: { attributes: [] }, 
+                        },
+                    ],
+                    through: { attributes: [] },
+                },
+            ],
+        });
 
         if( !user ) throw new AppError('Credenciales inválidas.' , 401 );
 
@@ -18,7 +35,22 @@ export class AuthService {
 
         if( !isPasswordValid ) throw new AppError('Credenciales inválidas.' , 401 );
 
-        const jwtPayload = { id: user.id, email: user.email, role: user.role }
+        const permissionsSet = new Set<string>();
+        user.roles?.forEach( role => {
+
+            role.permissions?.forEach( permission => {
+                permissionsSet.add(`${ permission.action }:${ permission.resource }`);
+            });
+
+        });
+
+        const permissions = Array.from( permissionsSet );
+
+        const jwtPayload = {
+            id: user.id
+            ,email: user.email
+            ,permissions
+        };
 
         const token = jwt.sign(
             jwtPayload,

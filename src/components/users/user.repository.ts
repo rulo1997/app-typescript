@@ -1,4 +1,4 @@
-import { InferCreationAttributes } from 'sequelize';
+import { FindOptions, InferCreationAttributes } from 'sequelize';
 import User from './user.model';
 
 export class UserRepository {
@@ -24,9 +24,9 @@ export class UserRepository {
 
     }
 
-    public async findByEmailWithPassword( email: string ): Promise<User> {
+    public async findByEmailWithPassword( email: string , options?: FindOptions ): Promise<User> {
 
-        const user = await User.scope('withPassword').findOne({ where: { email } });
+        const user = await User.scope('withPassword').findOne({ where: { email } , ...options });
         return user!;
 
     }

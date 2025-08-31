@@ -1,5 +1,6 @@
-import { Model, DataTypes, CreationOptional } from 'sequelize';
+import { Model, DataTypes, CreationOptional, BelongsToManyGetAssociationsMixin } from 'sequelize';
 import sequelize from '../../config/database';
+import Permission from '../permissions/permission.model';
 
 export interface RoleAttributes {
     id?: CreationOptional<number>;
@@ -11,6 +12,8 @@ class Role extends Model<RoleAttributes> implements RoleAttributes {
     public id!: CreationOptional<number>;
     public name!: string;
     public description!: string;
+    public readonly permissions?: Permission[];
+    public getPermissions!: BelongsToManyGetAssociationsMixin<Permission>;
 }
 
 Role.init(

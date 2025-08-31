@@ -7,6 +7,7 @@ interface TokenPayload {
     id: number;
     email: string;
     role: string;
+    permissions: string[];
     iat: number;
     exp: number;
 }

@@ -1,7 +1,8 @@
-import { Model , DataTypes , CreationOptional, HasManyGetAssociationsMixin } from 'sequelize';
+import { Model , DataTypes , CreationOptional, HasManyGetAssociationsMixin, BelongsToManyGetAssociationsMixin } from 'sequelize';
 
 import sequelize from '../../config/database';
 import Product from '../products/product.model';
+import Role from '../roles/role.model';
 
 type UserRole = {
     role: 'admin' | 'customer'
@@ -13,7 +14,6 @@ export interface UserAttributes {
     username: string;
     email: string;
     password: string;
-    role: UserRole;
 }
 
 class User extends Model<UserAttributes> implements UserAttributes {
@@ -22,9 +22,8 @@ class User extends Model<UserAttributes> implements UserAttributes {
     public username!: string;
     public email!: string;
     public password!: string;
-    public role!: UserRole;
-    public readonly products?: Product[]; 
-    public getProducts!: HasManyGetAssociationsMixin<Product>;
+    public readonly roles?: Role[];
+    public getRoles!: BelongsToManyGetAssociationsMixin<Role>;
 }
 
 User.init(
@@ -50,12 +49,7 @@ User.init(
         password: {
             type: DataTypes.STRING(128),
             allowNull: false,
-        },
-        role: {
-            type: DataTypes.ENUM('admin', 'customer'),
-            allowNull: false,
-            defaultValue: 'customer',
-        },
+        }
     },
     {
         tableName: 'users',
