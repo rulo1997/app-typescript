@@ -4,7 +4,7 @@ import sequelize from '../../config/database';
 import Product from '../products/product.model';
 
 type UserRole = {
-    role: 'admin' | 'user'
+    role: 'admin' | 'customer'
 }
 
 export interface UserAttributes {
@@ -52,8 +52,9 @@ User.init(
             allowNull: false,
         },
         role: {
-            type: DataTypes.STRING(128),
+            type: DataTypes.ENUM('admin', 'customer'),
             allowNull: false,
+            defaultValue: 'customer',
         },
     },
     {
