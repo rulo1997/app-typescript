@@ -1,15 +1,13 @@
 import { Model, DataTypes, CreationOptional, ForeignKey, BelongsToGetAssociationMixin } from 'sequelize';
 
 import sequelize from '../../config/database';
-import User from '../users/user.model';
 
 export interface ProductAttributes {
     id?: CreationOptional<number>;
     name: string;
     description: string;
     price: number;
-    stock: number;
-    userId?: ForeignKey<User['id']>;
+    stock?: number;
 }
 
 class Product extends Model<ProductAttributes> implements ProductAttributes {
@@ -18,9 +16,6 @@ class Product extends Model<ProductAttributes> implements ProductAttributes {
     public description!: string;
     public price!: number;
     public stock!: number;
-    public userId!: ForeignKey<User['id']>;
-    public readonly user?: User;
-    public getUser!: BelongsToGetAssociationMixin<User>;
 }
 
 Product.init(
@@ -47,10 +42,6 @@ Product.init(
             allowNull: false,
             defaultValue: 0,
         },
-        userId: {
-            type: DataTypes.INTEGER.UNSIGNED,
-            allowNull: false,
-        }
     },
     {
         tableName: 'products',

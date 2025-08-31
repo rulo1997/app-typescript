@@ -36,7 +36,7 @@ export class Server {
 
             setupAssociations();
 
-            await db.sync({ force: false });
+            await db.sync({ force: true });
             console.log(`Sincronizacion de Modelos`);
 
         } catch( error ) {
