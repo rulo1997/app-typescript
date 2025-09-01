@@ -1,6 +1,8 @@
 import express , { Application } from 'express';
 import 'express-async-errors'; 
 import cors from 'cors';
+import passport from 'passport'; // <-- Importa passport
+import configurePassport from './config/passport'; 
 
 import db from './config/database';
 import routes from './api/routes';
@@ -24,6 +26,9 @@ export class Server {
 
         this.app.use( cors() );
         this.app.use( express.json() );
+
+        this.app.use(passport.initialize());
+        configurePassport();
 
     }
 

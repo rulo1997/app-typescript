@@ -24,6 +24,13 @@ export class UserRepository {
 
     }
 
+    public async findByGoogleId( googleId: string , options?: FindOptions ): Promise<User | null> {
+
+        const user = await User.findOne({ where: { googleId } ,  ...options  });
+        return user;
+
+    }
+
     public async findByEmailWithPassword( email: string , options?: FindOptions ): Promise<User> {
 
         const user = await User.scope('withPassword').findOne({ where: { email } , ...options });

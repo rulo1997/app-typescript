@@ -2,23 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { AppError } from '../../core/AppError';
-
-interface TokenPayload {
-    id: number;
-    email: string;
-    role: string;
-    permissions: string[];
-    iat: number;
-    exp: number;
-}
-
-declare global {
-    namespace Express {
-        interface Request {
-            user?: TokenPayload;
-        }
-    }
-}
+import { TokenPayload } from '../../core/types/express';
 
 export const protect = ( req: Request , res: Response , next: NextFunction ) => {
 

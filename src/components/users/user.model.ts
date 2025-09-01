@@ -16,6 +16,8 @@ export interface UserAttributes {
     password: string;
     roles?: Role[];
     getRoles?: BelongsToManyGetAssociationsMixin<Role>;
+    googleId: string | null;
+    profilePicture: string | null;
 }
 
 class User extends Model<UserAttributes> implements UserAttributes {
@@ -26,6 +28,8 @@ class User extends Model<UserAttributes> implements UserAttributes {
     public password!: string;
     public readonly roles?: Role[];
     public getRoles!: BelongsToManyGetAssociationsMixin<Role>;
+    public googleId!: string | null; // <-- Añadir a la clase
+    public profilePicture!: string | null; //
 }
 
 User.init(
@@ -51,7 +55,16 @@ User.init(
         password: {
             type: DataTypes.STRING(128),
             allowNull: false,
-        }
+        },
+        googleId: {
+            type: DataTypes.STRING,
+            unique: true,
+            allowNull: true,
+        },
+        profilePicture: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
     },
     {
         tableName: 'users',
