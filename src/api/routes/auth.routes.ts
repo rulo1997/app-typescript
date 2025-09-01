@@ -34,7 +34,7 @@ router.get(
             { expiresIn: '8h' }
         );
 
-        res.redirect(`http://localhost:4200/auth/social-login?token=${ token }`);
+        res.redirect(`/auth-success.html?token=${ token }`);
 
     }
 );

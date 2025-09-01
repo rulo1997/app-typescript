@@ -1,19 +1,14 @@
-import { Model , DataTypes , CreationOptional, HasManyGetAssociationsMixin, BelongsToManyGetAssociationsMixin } from 'sequelize';
+import { Model , DataTypes , CreationOptional, BelongsToManyGetAssociationsMixin } from 'sequelize';
 
 import sequelize from '../../config/database';
-import Product from '../products/product.model';
 import Role from '../roles/role.model';
-
-type UserRole = {
-    role: 'admin' | 'customer'
-}
 
 export interface UserAttributes {
     id?: CreationOptional<number>;
     name: string;
     username: string;
     email: string;
-    password: string;
+    password?: string;
     roles?: Role[];
     getRoles?: BelongsToManyGetAssociationsMixin<Role>;
     googleId: string | null;
@@ -54,7 +49,7 @@ User.init(
         },
         password: {
             type: DataTypes.STRING(128),
-            allowNull: false,
+            allowNull: true,
         },
         googleId: {
             type: DataTypes.STRING,

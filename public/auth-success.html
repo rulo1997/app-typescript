@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Exitoso</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        pre { background-color: #eee; padding: 10px; border-radius: 5px; word-wrap: break-word; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>¡Autenticación Exitosa!</h1>
+    
+    <h2>Tu Token JWT:</h2>
+    <pre id="token-display">Cargando...</pre>
+
+    <button id="test-api-btn">Probar API (ruta /me)</button>
+
+    <h2>Respuesta de la API:</h2>
+    <pre id="api-response">Haz clic en el botón para probar...</pre>
+
+    <script>
+        window.onload = () => {
+            const tokenDisplay = document.getElementById('token-display');
+            const apiResponseDisplay = document.getElementById('api-response');
+            const testApiBtn = document.getElementById('test-api-btn');
+
+            // 1. Extraer el token de la URL
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get('token');
+
+            if (token) {
+                tokenDisplay.textContent = token;
+                // 2. Guardar el token en localStorage para usarlo en futuras peticiones
+                localStorage.setItem('jwt_token', token);
+            } else {
+                tokenDisplay.textContent = 'Error: No se encontró el token en la URL.';
+            }
+
+            // 3. Añadir evento al botón para hacer una petición autenticada
+            testApiBtn.onclick = async () => {
+                const storedToken = localStorage.getItem('jwt_token');
+                if (!storedToken) {
+                    apiResponseDisplay.textContent = 'No hay token guardado para hacer la petición.';
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/v1/auth/me', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${storedToken}`
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Error en la petición');
+                    }
+
+                    apiResponseDisplay.textContent = JSON.stringify(data, null, 2);
+                } catch (error) {
+                    apiResponseDisplay.textContent = `Error: ${error.message}`;
+                }
+            };
+        };
+    </script>
+</body>
+</html>
