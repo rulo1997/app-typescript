@@ -91,18 +91,7 @@ export class AuthService {
     public async handleGoogleAuth( profile: Profile ): Promise<TokenPayload> {
         
         // 1. Buscamos si ya existe un usuario con este ID de Google.
-        let user = await this.userRepo.findByGoogleId( profile.id , {
-            include: [{
-                model: Role,
-                as: 'roles',
-                include: [{
-                    model: Permission,
-                    as: 'permissions',
-                    through: { attributes: [] },
-                }],
-                through: { attributes: [] },
-            }],
-        });
+        let user = await this.userRepo.findByGoogleId( profile.id );
 
         if( !user ) {
 
@@ -115,6 +104,7 @@ export class AuthService {
                 user = await userByEmail.save();
 
             } else {
+                
                 // 3. Si no existe de ninguna forma, creamos un nuevo usuario.
                 const newUser = await this.userRepo.create({
                     googleId: profile.id,
@@ -125,6 +115,7 @@ export class AuthService {
                 } as User );
                 
                 user = newUser;
+
             }
 
         }
