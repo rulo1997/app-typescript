@@ -31,6 +31,16 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
+  cache:
+    image: redis:6.2-alpine # Usamos una imagen ligera de Redis
+    container_name: ecommerce-redis-cache
+    restart: always
+    ports:
+      - "6379:6379" # Expone el puerto por defecto de Redis a tu máquina
+    volumes:
+      - redis-data:/data # Persiste los datos de Redis
+
 # Docker creará y gestionará este volumen por nosotros.
 volumes:
   mysql-data:
+  redis-data:
