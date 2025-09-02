@@ -1,8 +1,9 @@
 import express , { Application } from 'express';
 import 'express-async-errors'; 
 import cors from 'cors';
-import passport from 'passport'; // <-- Importa passport
+import passport from 'passport';
 import configurePassport from './config/passport'; 
+import './config/redis';
 
 import db from './config/database';
 import routes from './api/routes';

@@ -1,4 +1,4 @@
-import { InferCreationAttributes } from 'sequelize';
+import { FindAndCountOptions, InferCreationAttributes } from 'sequelize';
 import Product from './product.model';
 
 export class ProductRepository {
@@ -22,6 +22,14 @@ export class ProductRepository {
     public async findAllProducts(): Promise<Product[] | []> {
 
         const products = await Product.findAll();
+
+        return products;
+
+    }
+
+    public async findAndCountAllProducts( options: FindAndCountOptions ): Promise<{ rows: Product[] | []; count: number }> {
+
+        const products = await Product.findAndCountAll( options );
 
         return products;
 

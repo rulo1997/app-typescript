@@ -23,8 +23,8 @@ class User extends Model<UserAttributes> implements UserAttributes {
     public password!: string;
     public readonly roles?: Role[];
     public getRoles!: BelongsToManyGetAssociationsMixin<Role>;
-    public googleId!: string | null; // <-- Añadir a la clase
-    public profilePicture!: string | null; //
+    public googleId!: string | null;
+    public profilePicture!: string | null;
 }
 
 User.init(

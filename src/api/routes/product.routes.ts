@@ -5,7 +5,7 @@ import { createProductValidator } from '../../components/products/product.valida
 
 const router = Router();
 
-router.get('/', productController.products );
+router.get('/', productController.getProducts );
 
 router.post('/', createProductValidator , productController.create );
 

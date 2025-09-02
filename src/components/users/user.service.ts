@@ -3,7 +3,6 @@ import { InferCreationAttributes } from 'sequelize';
 
 import { userRepository, UserRepository } from './user.repository';
 import User , { UserAttributes } from './user.model';
-import { Request, NextFunction } from 'express';
 
 type CreateUserDto = InferCreationAttributes<User>;
 
