@@ -21,9 +21,3 @@ export const createUserValidator = [
     check('password', 'La contraseña debe tener al menos 6 caracteres').isLength({ min: 6 }),
     validarCampos,
 ];
-
-
-
-// Aquí podrías exportar otros validadores en el futuro
-// export const updateUserValidator = [ ... ];
-// export const loginValidator = [ ... ];
