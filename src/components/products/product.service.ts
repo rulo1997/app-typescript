@@ -79,8 +79,7 @@ export class ProductService {
 
         try {
 
-            // 'EX', 600 le dice a Redis que la clave expirará en 600 segundos (10 minutos).
-            await redisClient.set( cacheKey , JSON.stringify( result ) , { EX: 600 });
+            await redisClient.set( cacheKey , JSON.stringify( result ) );
 
         } catch( error ) {
             console.error('Error al guardar en el caché de Redis:', error);

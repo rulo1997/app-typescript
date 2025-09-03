@@ -11,7 +11,7 @@ export class ProductRepository {
 
     }
 
-    public async findById( id: number , transaction: Transaction ): Promise<Product | null> {
+    public async findById( id: number , transaction?: Transaction ): Promise<Product | null> {
 
         const products = await Product.findByPk( id , { transaction });
 

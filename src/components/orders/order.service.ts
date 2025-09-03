@@ -4,8 +4,10 @@ import { CartRepository, cartRepository } from '../carts/cart.repository';
 import { productRepository, ProductRepository } from '../products/product.repository';
 import { orderRepository , OrderRepository } from './order.repository';
 import { cartItemRepository, CartItemRepository } from '../carts/cart-item.repository';
+import { userRepository, UserRepository } from '../users/user.repository';
 
 import Order from './order.model';
+import notificationQueue from '../../queues/notification.queue';
 
 import { AppError } from '../../core/AppError';
 
@@ -16,6 +18,7 @@ export class OrderService {
         private readonly cartRepo: CartRepository = cartRepository,
         private readonly cartItemRepo: CartItemRepository = cartItemRepository,
         private readonly orderRepo: OrderRepository = orderRepository,
+        private readonly userRepo: UserRepository = userRepository,
     ){}
 
     public async createOrderFromCart( userId: number ): Promise<Order> {
@@ -24,6 +27,10 @@ export class OrderService {
 
         try {
             
+            const user = await this.userRepo.findById( userId );
+
+            if( !user ) throw new AppError('Usuario no encontrado.', 404 );
+
             const cart = await this.cartRepo.findOrCreateByUser( userId );
             const cartItems = cart.items;
 
@@ -60,6 +67,26 @@ export class OrderService {
 
             await transaction.commit();
             
+            try {
+
+                await notificationQueue.add(
+                    'send-confirmation-email',
+                    {
+                        orderId: order.id,
+                        userEmail: user.email,
+                        userName: user.name,
+                        total: order.total
+                    }
+                );
+
+                console.log(`📨 Trabajo para enviar email a ${ user.email } añadido a la cola.`);
+
+            } catch( queueError ) {
+                
+                console.error("Error al añadir el trabajo a la cola de notificaciones:", queueError );
+
+            }
+
             return order;
 
         } catch( error ) {
