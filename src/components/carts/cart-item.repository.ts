@@ -1,3 +1,5 @@
+import { Transaction } from 'sequelize';
+
 import CartItem from './cart-item.model';
 
 export class CartItemRepository {
@@ -24,6 +26,12 @@ export class CartItemRepository {
     public async delete( itemId: number ): Promise<number> {
 
         return CartItem.destroy({ where: { id: itemId } });
+
+    }
+
+    public async deleteByCartId( cartId: number , transaction: Transaction ): Promise<number> {
+
+        return CartItem.destroy({ where: { cartId } });
 
     }
 

@@ -1,4 +1,4 @@
-import { FindAndCountOptions, InferCreationAttributes } from 'sequelize';
+import { FindAndCountOptions, InferCreationAttributes, Transaction } from 'sequelize';
 import Product from './product.model';
 
 export class ProductRepository {
@@ -11,9 +11,9 @@ export class ProductRepository {
 
     }
 
-    public async findById( id: number ): Promise<Product | null> {
+    public async findById( id: number , transaction: Transaction ): Promise<Product | null> {
 
-        const products = await Product.findByPk( id );
+        const products = await Product.findByPk( id , { transaction });
 
         return products;
 
@@ -32,6 +32,16 @@ export class ProductRepository {
         const products = await Product.findAndCountAll( options );
 
         return products;
+
+    }
+
+      public async decrementStock( productId: number , quantity: number , transaction: Transaction ): Promise<void> {
+
+        await Product.decrement('stock', {
+            by: quantity,
+            where: { id: productId },
+            transaction,
+        });
 
     }
 

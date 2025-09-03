@@ -4,6 +4,8 @@ import Permission from '../../components/permissions/permission.model';
 import Cart from '../../components/carts/cart.model';
 import CartItem from '../../components/carts/cart-item.model';
 import Product from '../../components/products/product.model';
+import Order from '../../components/orders/order.model';
+import OrderItem from '../../components/orders/order-item.model';
 
 export const setupAssociations = () => {
 
@@ -48,6 +50,15 @@ export const setupAssociations = () => {
     // Producto <-> ItemCarrito (Uno a Muchos)
     Product.hasMany( CartItem , { foreignKey: 'productId', as: 'cartItems' });
     CartItem.belongsTo( Product , { foreignKey: 'productId', as: 'product' });
+
+    User.hasMany( Order , { foreignKey: 'userId', as: 'orders' });
+    Order.belongsTo( User , { foreignKey: 'userId', as: 'user' });
+
+    Order.hasMany( OrderItem , { foreignKey: 'orderId', as: 'items' });
+    OrderItem.belongsTo( Order , { foreignKey: 'orderId', as: 'order' });
+
+    Product.hasMany( OrderItem , { foreignKey: 'productId' });
+    OrderItem.belongsTo( Product , { foreignKey: 'productId', as: 'product' });
 
     console.log("✅ Asociaciones configuradas correctamente.");
 

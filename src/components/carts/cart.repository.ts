@@ -1,5 +1,4 @@
 import Cart from './cart.model';
-import User from '../users/user.model';
 import CartItem from './cart-item.model';
 import Product from '../products/product.model';
 
