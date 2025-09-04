@@ -29,11 +29,19 @@ export class UserController {
         const body = req.body;
         const { id } = req.params;
 
-        console.log({ id , body });
+        await this.service.updateUser( Number( id ) , body );
 
-        const users = await this.service.updateUser( Number( id ) , body );
+        res.json({ msg: 'El usuario se actualizó con éxito' });
 
-        res.json({ msg: 'OK' , users });
+    }
+
+    public deleteUser = async( req: Request , res: Response ): Promise<void> => {
+
+        const { id } = req.params;
+
+        await this.service.deleteUser( Number( id ) );
+
+        res.json({ msg: 'El usuario se eliminó correctamente' });
 
     }
 

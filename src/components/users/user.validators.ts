@@ -52,4 +52,10 @@ export const updateUserValidator = [
 
         }),
     validarCampos
-]
+];
+
+export const deleteUserValidator = [
+    param('id','El id es obligatorio').not().isEmpty()
+        .custom( existUserById ),
+    validarCampos
+];

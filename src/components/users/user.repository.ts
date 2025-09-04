@@ -51,6 +51,12 @@ export class UserRepository {
 
     }
 
+    public async deleteUser( userId: number ): Promise<void> {
+
+        await User.destroy({ where: { id: userId } });
+
+    }
+
 }
 
 export const userRepository = new UserRepository();

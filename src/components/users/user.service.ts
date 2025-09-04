@@ -39,6 +39,12 @@ export class UserService {
 
     }
 
+    public async deleteUser( id: number ): Promise<void> {
+
+        await this.repository.deleteUser( id );
+
+    }
+
     /* VALIDACIONES */
     public async isEmailTaken( email: string ): Promise<boolean> {
 
