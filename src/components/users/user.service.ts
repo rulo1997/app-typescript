@@ -33,6 +33,12 @@ export class UserService {
 
     }
 
+    public async updateUser( id: number , body: User ): Promise<void> {
+
+        await this.repository.updateUser( id , body );
+
+    }
+
     /* VALIDACIONES */
     public async isEmailTaken( email: string ): Promise<boolean> {
 
@@ -47,10 +53,13 @@ export class UserService {
         return !!isPasswordValid;
 
     }
-    
-    // Aquí irían otros métodos como:
-    // - getUserById(id: number)
-    // - updateUser(id: number, data: Partial<CreateUserDto>)
+
+    public async isValidUserId( id: number ): Promise<boolean> {
+
+        const isValid = await this.repository.findById( id );
+        return !!isValid;
+
+    }
 
 }
 

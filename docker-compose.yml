@@ -20,6 +20,23 @@ services:
       # "Esconde" la carpeta node_modules local para usar la que se instaló dentro del contenedor
       - /app/node_modules
     # 'depends_on' asegura que la base de datos y el caché se inicien ANTES que nuestra API
+    command: npm run dev
+    depends_on:
+      - db
+      - cache
+
+  # --- 2. NUEVO SERVICIO PARA EL WORKER ---
+  worker:
+    container_name: ecommerce-worker
+    # Usa la misma imagen que la API, no necesita reconstruir
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    # La única diferencia clave: el comando que ejecuta
+    command: npm run worker
     depends_on:
       - db
       - cache

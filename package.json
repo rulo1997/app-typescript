@@ -6,7 +6,7 @@
     "scripts": {
         "build": "tsc -w",
         "start": "node --env-file .env dist/index.js",
-        "dev": "ts-node-dev --env-file .env --respawn src/app.ts",
+        "dev": "ts-node-dev --env-file .env --respawn --transpile-only --poll src/app.ts",
         "worker": "ts-node src/queues/notification.worker.ts",
         "test": "cross-env NODE_ENV=test jest --testTimeout=10000 --detectOpenHandles"
     },

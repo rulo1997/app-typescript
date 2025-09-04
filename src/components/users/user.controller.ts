@@ -16,7 +16,7 @@ export class UserController {
 
     };
 
-    public users = async( req: Request , res: Response ): Promise<void> => {
+    public getUsers = async( req: Request , res: Response ): Promise<void> => {
 
         const users = await this.service.getUsers();
 
@@ -24,9 +24,19 @@ export class UserController {
 
     }
 
-    // Aquí irían otros métodos como:
-    // - getById = async (req: Request, res: Response) => { ... }
-    // - update = async (req: Request, res: Response) => { ... }
+    public updateUser = async( req: Request , res: Response ): Promise<void> => {
+
+        const body = req.body;
+        const { id } = req.params;
+
+        console.log({ id , body });
+
+        const users = await this.service.updateUser( Number( id ) , body );
+
+        res.json({ msg: 'OK' , users });
+
+    }
+
 }
 
 export const userController = new UserController();

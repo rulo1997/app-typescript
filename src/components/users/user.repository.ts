@@ -45,6 +45,12 @@ export class UserRepository {
 
     }
 
+    public async updateUser( userId: number , body: User ): Promise<void> {
+
+        await User.update( body , { where: { id: userId } });
+
+    }
+
 }
 
 export const userRepository = new UserRepository();
