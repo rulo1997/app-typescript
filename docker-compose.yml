@@ -1,46 +1,52 @@
-# Versión del formato de Docker Compose
 version: '3.8'
 
-# Definición de los servicios (contenedores)
 services:
-  # Nombre de nuestro servicio de base de datos
-  db:
-    # Imagen de Docker que usaremos. Es buena práctica fijar una versión.
-    image: mysql:8.0
-    
-    # Nombre que le daremos al contenedor para identificarlo fácilmente
-    container_name: ecommerce-mysql-db
-    
-    # Política de reinicio. 'always' hace que se inicie con Docker.
-    restart: always
-    
-    # Variables de entorno para configurar MySQL
-    # ¡Estas deben coincidir con tu archivo .env!
+  # --- NUEVO SERVICIO PARA NUESTRA API ---
+  api:
+    container_name: ecommerce-api
+    # 'build: .' le dice a Compose que construya una imagen usando el Dockerfile en el directorio actual
+    build: .
+    ports:
+      - "3000:3000"
     environment:
-      MYSQL_ROOT_PASSWORD: root_password_super_secreta # Cambia esto por una contraseña segura
-      MYSQL_DATABASE: ecommerce_db
-      MYSQL_USER: ecommerce_user
-      MYSQL_PASSWORD: ecommerce_password
-      
-    # Mapeo de puertos. Expone el puerto 3306 del contenedor al puerto 3306 de tu máquina.
+      # Aseguramos que el entorno sea de desarrollo
+      - NODE_ENV=development
+    # 'env_file' carga las variables desde nuestro archivo .env al contenedor
+    env_file:
+      - .env
+    volumes:
+      # Sincroniza nuestro código local con el del contenedor para hot-reloading
+      - ./:/app
+      # "Esconde" la carpeta node_modules local para usar la que se instaló dentro del contenedor
+      - /app/node_modules
+    # 'depends_on' asegura que la base de datos y el caché se inicien ANTES que nuestra API
+    depends_on:
+      - db
+      - cache
+
+  db:
+    image: mysql:8.0
+    container_name: ecommerce-mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # Lee desde el .env
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3306"
-      
-    # Volúmenes para persistir los datos.
-    # Esto evita que pierdas la información de la base de datos si el contenedor se detiene o elimina.
     volumes:
       - mysql-data:/var/lib/mysql
 
   cache:
-    image: redis:6.2-alpine # Usamos una imagen ligera de Redis
+    image: redis:6.2-alpine
     container_name: ecommerce-redis-cache
     restart: always
     ports:
-      - "6379:6379" # Expone el puerto por defecto de Redis a tu máquina
+      - "6379:6379"
     volumes:
-      - redis-data:/data # Persiste los datos de Redis
+      - redis-data:/data
 
-# Docker creará y gestionará este volumen por nosotros.
 volumes:
   mysql-data:
   redis-data:

@@ -1,0 +1,18 @@
+# Ignorar las dependencias que ya tenemos instaladas localmente
+node_modules
+
+# Ignorar la carpeta de build local
+dist
+
+# Ignorar logs de npm
+npm-debug.log
+
+# Ignorar el Dockerfile mismo y archivos de compose
+Dockerfile
+docker-compose.yml
+
+# Ignorar el directorio de git
+.git
+
+# Ignorar el archivo de variables de entorno (se inyectarán de otra forma)
+.env

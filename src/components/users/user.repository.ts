@@ -31,10 +31,10 @@ export class UserRepository {
 
     }
 
-    public async findByEmailWithPassword( email: string , options?: FindOptions ): Promise<User> {
+    public async findByEmailWithPassword( email: string , options?: FindOptions ): Promise<User | null> {
 
         const user = await User.scope('withPassword').findOne({ where: { email } , ...options });
-        return user!;
+        return user;
 
     }
 

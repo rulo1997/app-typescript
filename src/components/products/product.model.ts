@@ -27,6 +27,7 @@ Product.init(
         },
         name: {
             type: new DataTypes.STRING(255),
+            unique: true,
             allowNull: false,
         },
         description: {

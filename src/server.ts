@@ -4,11 +4,14 @@ import cors from 'cors';
 import passport from 'passport';
 import configurePassport from './config/passport'; 
 import './config/redis';
+import swaggerUi from 'swagger-ui-express'; // <-- Importar
+import { swaggerSpec } from './config/swagger';   // <-- Importar
 
 import db from './config/database';
 import routes from './api/routes';
 import { errorHandler } from './api/middlewares/error.handler';
 import { setupAssociations } from './core/database/associations';
+
 
 export class Server {
 
@@ -23,6 +26,10 @@ export class Server {
 
     }
 
+    public getApp() {
+        return this.app;
+    }
+
     private middlewares() {
 
         this.app.use( cors() );
@@ -32,6 +39,8 @@ export class Server {
 
         this.app.use(passport.initialize());
         configurePassport();
+
+        this.app.use('/api-docs', swaggerUi.serve , swaggerUi.setup( swaggerSpec ));
 
     }
 
